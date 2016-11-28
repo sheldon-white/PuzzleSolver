@@ -1,4 +1,4 @@
 package org.srw.PuzzleSolver
 
-class FreecellMove(val card: Card, val destination: CardDestination) extends Move {
+case class FreecellMove(card: Card, source: CardDestination, destination: CardDestination) {
 }

@@ -4,8 +4,8 @@ import org.scalatest.{FunSpec, Matchers}
 
 class DeckTest extends FunSpec with Matchers {
 
-  private val hearts = new Suit("hearts", false)
-  private val clubs = new Suit("clubs", true)
+  private val hearts = new Suit("H", false)
+  private val clubs = new Suit("C", true)
   private val suits = Set[Suit](hearts, clubs)
 
   describe("A Deck") {
@@ -16,6 +16,7 @@ class DeckTest extends FunSpec with Matchers {
     }
   }
 }
+
 //    it("gives out the correct value when an asynchronous block is submitted and is completed through a Promise") {
 //      val promiseInternals = new PromiseInternals
 //      val longCalculationFuture = promiseInternals.someExternalDelayedCalculation{()=>

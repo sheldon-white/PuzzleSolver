@@ -1,9 +1,23 @@
 package org.srw.PuzzleSolver
 
-/**
-  * Created by swhite on 11/25/16.
-  */
 trait CardDestination {
+  /**
+    * What cards can be moved from here?
+    * @return Ths set of moveable cards.
+    */
+  def availableCards: Set[Card]
 
+  /**
+    *
+    * @param card
+    * @return
+    */
   def canPlaceCard(card: Card): Boolean
+
+  /**
+    *
+    * @param move
+    * @return
+    */
+  def applyMove(move: FreecellMove): CardDestination
 }

@@ -1,10 +1,15 @@
 package org.srw.PuzzleSolver
 
-import scala.collection.immutable.List
+class Cells(cards: Set[Card]) extends CardDestination {
 
-class Cells(size: Int) extends CardDestination {
+  override def canPlaceCard(card: Card): Boolean = cards.size < FreecellPuzzleState.cellSize
 
-  override def canPlaceCard(card: Card): Boolean = cards.size < size
+  override def availableCards: Set[Card] = cards
 
-  private val cards = List[Card]()
+  override def applyMove(move: FreecellMove): Cells = {
+    move.source match {
+      case c if c == this => new Cells(cards - move.card)
+      case _ => new Cells(cards + move.card)
+    }
+  }
 }
