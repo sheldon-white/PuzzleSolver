@@ -8,16 +8,19 @@ class CardStack(val cards: List[Card]) extends CardDestination {
 
   override def availableCards: Set[Card] = Set(cards.head)
 
+  override def toString: String = cards.mkString(" ")
+
+  override def prefix: String = "CS"
+
   override def canPlaceCard(card: Card): Boolean =
     cards.size match {
       case 0 => true
       case _ => cards.head.rank == card.rank + 1 && cards.head.isOppositeColor(card)
     }
 
-  override def applyMove(move: FreecellMove): CardStack = {
+  override def applyMove(move: FreecellMove): CardStack =
     move.source match {
       case c if c == this => new CardStack(cards.drop(1))
       case _ => new CardStack(move.card :: cards)
     }
-  }
 }

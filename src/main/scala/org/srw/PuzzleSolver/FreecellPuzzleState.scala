@@ -8,7 +8,9 @@ object FreecellPuzzleState {
 }
 
 class FreecellPuzzleState(foundation: Foundation, tableau: Seq[CardStack], cells: Cells) {
-  def this(deck: Deck) = this(new Foundation(Map[Suit, Int](), deck.maxCardRank), Seq[CardStack](), new Cells(Set[Card]()))
+  def this(deck: Deck) = this(new Foundation(Map[Suit, Card](), deck), Seq[CardStack](), new Cells(Set[Card]()))
+
+  override def toString: String = foundation + "    " + cells + "\n\n" + tableau.mkString(" ")
 
   def isSolution: Boolean = foundation.isComplete
 
@@ -24,24 +26,39 @@ class FreecellPuzzleState(foundation: Foundation, tableau: Seq[CardStack], cells
 
   def apply(move: FreecellMove): FreecellPuzzleState = {
     move match {
-      case FreecellMove(card, src: Cells, dst: CardStack) =>
-        val newTableau = tableau.filterNot(_ == dst) :+ dst.applyMove(move)
-        new FreecellPuzzleState(foundation, newTableau, src.applyMove(move))
-
       case FreecellMove(card, src: Cells, dst: Foundation) =>
         new FreecellPuzzleState(dst.applyMove(move), tableau, src.applyMove(move))
 
+      case FreecellMove(card, src: Cells, dst: CardStack) =>
+        val newTableau = tableau.map {
+          case `dst` => dst.applyMove(move);
+          case x => x
+        }
+        new FreecellPuzzleState(foundation, newTableau, src.applyMove(move))
+
       case FreecellMove(card, src: CardStack, dst: Cells) =>
-        val newTableau = tableau.filterNot(_ == dst) :+ src.applyMove(move)
+        val newTableau = tableau.map {
+          case `src` => src.applyMove(move);
+          case x => x
+        }
         new FreecellPuzzleState(foundation, newTableau, dst.applyMove(move))
 
       case FreecellMove(card, src: CardStack, dst: Foundation) =>
-        val newTableau = tableau.filterNot(_ == dst) :+ src.applyMove(move)
+        val newTableau = tableau.map {
+          case `src` => src.applyMove(move);
+          case x => x
+        }
         new FreecellPuzzleState(dst.applyMove(move), newTableau, cells)
 
       case FreecellMove(card, src: CardStack, dst: CardStack) =>
-        val newTableau = tableau.filter(cs => cs == dst || cs == src) :+ src.applyMove(move) :+ dst.applyMove(move)
+        val newTableau = tableau.map {
+          case `src` => src.applyMove(move);
+          case `dst` => dst.applyMove(move);
+          case x => x
+        }
         new FreecellPuzzleState(foundation, newTableau, cells)
+
+      case _ => null
     }
   }
 }
