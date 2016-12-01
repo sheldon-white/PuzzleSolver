@@ -3,12 +3,12 @@ package org.srw.PuzzleSolver
 import scala.collection.immutable._
 
 object FreecellPuzzleState {
-  val cellSize = 2
+  val cellSize = 3
   val tableauSize = 3
 }
 
 class FreecellPuzzleState(foundation: Foundation, tableau: Seq[CardStack], cells: Cells) {
-  def this(deck: Deck) = this(new Foundation(Map[Suit, Card](), deck), Seq[CardStack](), new Cells(Set[Card]()))
+  def this(deck: Deck) = this(new Foundation(Map(), deck), Seq(), new Cells(List()))
 
   override def toString: String = foundation + "    " + cells + "\n\n" + tableau.mkString(" ")
 
